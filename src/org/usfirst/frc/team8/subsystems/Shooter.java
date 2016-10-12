@@ -23,13 +23,6 @@ public class Shooter extends Subsystem{
 		shooterArm.reverseSensor(false);
 	}
 	
-	public enum State {
-		RETRACTING,
-		EXTENDING, 
-		LOCKING,
-		UNLOCKING
-	}
-	
 	public void moveAtSpeed(double speed) {
 		shooterArm.changeControlMode(TalonControlMode.PercentVbus);
 		shooterArm.set(speed);
@@ -37,7 +30,7 @@ public class Shooter extends Subsystem{
 	
 	@Override
 	protected void initDefaultCommand() {
-		this.setDefaultCommand(new TeleopShooter(() -> OI.operatorStick.getRawAxis(5) * -1));
+		this.setDefaultCommand(new TeleopShooter(() -> OI.shooterAxis));
 	}
 
 }
