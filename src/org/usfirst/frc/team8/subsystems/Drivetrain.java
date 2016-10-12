@@ -35,6 +35,13 @@ public class Drivetrain extends Subsystem implements PIDSource {
 		leftBack.changeControlMode(TalonControlMode.Follower);
 		leftBack.set(leftFront.getDeviceID());
 		
+		driveEncoderA.setDistancePerPulse(-0.184);
+		driveEncoderB.setDistancePerPulse(0.184);
+		driveEncoderA.reset();
+		driveEncoderB.reset();
+		
+		spartanBoard.calibrate();;
+		
 		rightFront.setFeedbackDevice(FeedbackDevice.CtreMagEncoder_Relative);
 		rightFront.reverseSensor(true);
 		rightBack.changeControlMode(TalonControlMode.Follower);
@@ -137,7 +144,7 @@ public class Drivetrain extends Subsystem implements PIDSource {
 	
 	@Override
 	protected void initDefaultCommand() {
-		this.setDefaultCommand(new TeleopDrive(OI.driveStickValue, OI.turnStickValue, ()-> OI.toggleAutoShift.get(), () -> OI.shiftDown.get(), () -> OI.shiftUp.get()));
+		this.setDefaultCommand(new TeleopDrive(OI.driveStickValue, OI.turnStickValue, ()-> OI.toggleAutoShift.get(), () -> OI.shiftDown.get(), () -> OI.shiftUp.get(), () ->OI.quickTurn.get()));
 		
 	}
 

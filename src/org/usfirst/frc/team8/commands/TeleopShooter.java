@@ -1,7 +1,7 @@
 package org.usfirst.frc.team8.commands;
 
 import java.util.function.DoubleSupplier;
-import static org.usfirst.frc.team8.robot.HAL.shooterArm;
+import static org.usfirst.frc.team8.robot.HAL.shooter;
 
 import edu.wpi.first.wpilibj.command.Command;
 
@@ -12,6 +12,7 @@ public class TeleopShooter extends Command {
 
 	private DoubleSupplier yAxis;
 	public TeleopShooter(DoubleSupplier yAxis) {
+		requires(shooter);
 		this.yAxis = yAxis;
 	}
 	@Override
@@ -20,7 +21,7 @@ public class TeleopShooter extends Command {
 
 	@Override
 	protected void execute() {
-		shooterArm.set(yAxis.getAsDouble());
+		shooter.moveAtSpeed(yAxis.getAsDouble());
 	}
 
 	@Override

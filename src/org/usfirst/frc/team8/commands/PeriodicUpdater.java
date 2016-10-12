@@ -16,7 +16,9 @@ public class PeriodicUpdater extends Command {
 	protected void execute() {
 		// TODO Auto-generated method stub
 		HAL.table.putNumber("matchtime", HAL.ds.getMatchTime());
-		
+		System.out.println("encoder a: " + HAL.driveEncoderA.getDistance());
+		System.out.println("encoder b: " + HAL.driveEncoderB.getDistance());
+		System.out.println("gyro: " + HAL.spartanBoard.getAngle());
 	}
 
 	@Override

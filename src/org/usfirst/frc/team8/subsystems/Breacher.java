@@ -13,7 +13,7 @@ public class Breacher extends Subsystem {
 	
 	@Override
 	protected void initDefaultCommand() {
-		this.setDefaultCommand(new TeleopBreacher(() -> OI.breacherAxis));
+		this.setDefaultCommand(new TeleopBreacher(OI.breacherAxis));
 	}
 
 }

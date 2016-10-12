@@ -17,11 +17,12 @@ public class TeleopDrive extends Command {
 	public final BooleanSupplier toggleAutoShift;
 	public final BooleanSupplier isLowGear;
 	public final BooleanSupplier isHighGear;
+	public final BooleanSupplier isQuickTurn;
 	private boolean autoShift;
 	private boolean dirty;
 	private Gear gear;
 	
-	public TeleopDrive(DoubleSupplier driveStick, DoubleSupplier turnStick, BooleanSupplier toggleAutoShift, BooleanSupplier isLowGear, BooleanSupplier isHighGear) {
+	public TeleopDrive(DoubleSupplier driveStick, DoubleSupplier turnStick, BooleanSupplier toggleAutoShift, BooleanSupplier isLowGear, BooleanSupplier isHighGear, BooleanSupplier isQuickTurn) {
 		super("Teleop Drive");
 		requires(drivetrain);
 		this.cdh = new CheezyDriveHelper();
@@ -30,6 +31,7 @@ public class TeleopDrive extends Command {
 		this.toggleAutoShift = toggleAutoShift;
 		this.isLowGear = isLowGear;
 		this.isHighGear = isHighGear;
+		this.isQuickTurn = isQuickTurn;
 		this.autoShift = false;
 		this.gear = Gear.LOW;
 	}
@@ -63,7 +65,7 @@ public class TeleopDrive extends Command {
 			}
 		}
 		drivetrain.shiftTo(gear);
-		cdh.cheezyDrive(driveStick.getAsDouble(), turnStick.getAsDouble(), gear == Gear.LOW);
+		cdh.cheezyDrive(driveStick.getAsDouble(), turnStick.getAsDouble(), isQuickTurn.getAsBoolean());
 		
 	}
 

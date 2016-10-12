@@ -62,16 +62,16 @@ public class OI {
 	public static Button shiftUp = new JoystickButton(driveStick, 4);
 	public static Button shiftDown = new JoystickButton(driveStick, 6);
 	public static Button toggleAutoShift = new JoystickButton(driveStick, 7);
-	public static Button quickTurn = new JoystickButton(driveStick, 1);
 	public static DoubleSupplier driveStickValue = () -> deadband.applyAsDouble(driveStick.getY());
 	
 	public static Joystick turnStick = new Joystick(1);
+	public static Button quickTurn = new JoystickButton(turnStick, 1);
 	public static DoubleSupplier turnStickValue = () -> deadband.applyAsDouble(turnStick.getX());
 	
 	public static Joystick operatorStick = new Joystick(4);
 	
-	public static double shooterAxis = -deadband.applyAsDouble(operatorStick.getRawAxis(2)); //xbox left y axis
-	public static double breacherAxis = deadband.applyAsDouble(operatorStick.getRawAxis(5));
+	public static DoubleSupplier shooterAxis = () -> deadband.applyAsDouble(-operatorStick.getRawAxis(1)); //xbox left y axis
+	public static DoubleSupplier breacherAxis = () -> deadband.applyAsDouble(operatorStick.getRawAxis(5));
 	
 	public static Button xboxA = new JoystickButton(operatorStick, 1);
 	public static Button xboxB = new JoystickButton(operatorStick, 2);
@@ -94,8 +94,7 @@ public class OI {
 		xboxX.whenPressed(new ShooterExtend());
 		xboxY.whenPressed(new ShooterUnlock());
 		
-		xboxLB.whileHeld(new SetState<Grabber.State>(grabber, Grabber.State.RAISED));
-		xboxLB.whenReleased(new SetState<Grabber.State>(grabber, Grabber.State.LOWERED));
+		xboxLB.whileHeld(new SetState<Grabber.State>(grabber, Grabber.State.RAISED, Grabber.State.LOWERED));
 	}
 	
 }

@@ -1,113 +1,99 @@
 package org.usfirst.frc.team8.lib;
-import org.usfirst.frc.team8.robot.Constants;
 import org.usfirst.frc.team8.robot.HAL;
-import org.usfirst.frc.team8.robot.OI;
 
 public class CheezyDriveHelper {
-	double oldWheel, quickStopAccumulator;
-	private final double deadband = 0.02;
+	private double old_wheel, quick_stop_acc;
+	private final double DEADBAND = 0.02;
 	
-	public void cheezyDrive(double throttle, double wheel, boolean isHighGear) {
-		double wheelNonLinearity;
+	public void cheezyDrive(double throttle, double wheel, boolean isQuickTurn) {
+		boolean quick_turn = isQuickTurn;
 		
-		boolean isQuickTurn = OI.quickTurn.get();
-		throttle = handleDeadband(throttle, deadband);
-		wheel = handleDeadband(wheel, deadband);
-		double negativeInertia = wheel - oldWheel;
-		oldWheel = wheel;
+		double wheel_non_linear;
 		
-		if(isHighGear) {
-			wheelNonLinearity = 0.6;
-			wheel = Math.sin(Math.PI / 2.0 * wheelNonLinearity * wheel) / Math.sin(Math.PI / 2.0 * wheelNonLinearity);
-			wheel = Math.sin(Math.PI / 2.0 * wheelNonLinearity * wheel) / Math.sin(Math.PI / 2.0 * wheelNonLinearity);
-		} else {
-			wheelNonLinearity = 0.5;
-			wheel = Math.sin(Math.PI / 2.0 * wheelNonLinearity * wheel) / Math.sin(Math.PI / 2.0 * wheelNonLinearity);
-			wheel = Math.sin(Math.PI / 2.0 * wheelNonLinearity * wheel) / Math.sin(Math.PI / 2.0 * wheelNonLinearity);
-			wheel = Math.sin(Math.PI / 2.0 * wheelNonLinearity * wheel) / Math.sin(Math.PI / 2.0 * wheelNonLinearity);
+		if(Math.abs(wheel) < DEADBAND) {
+			wheel = 0;
+		}
+		if(Math.abs(throttle) < DEADBAND) {
+			throttle = 0;
 		}
 		
-		double leftSpeed, rightSpeed, overPower;
+		double neg_inertia = wheel - old_wheel;
+		old_wheel = wheel;
+
+		wheel_non_linear = 0.6f;
+		wheel = Math.sin(Math.PI / 2.0 * wheel_non_linear * wheel) / Math.sin(Math.PI / 2.0 * wheel_non_linear);
+		wheel = Math.sin(Math.PI / 2.0 * wheel_non_linear * wheel) / Math.sin(Math.PI / 2.0 * wheel_non_linear);
+		wheel = Math.sin(Math.PI / 2.0 * wheel_non_linear * wheel) / Math.sin(Math.PI / 2.0 * wheel_non_linear);
+
+		
+		double left_PWM, right_PWM, over_power;
 		double sensitivity;
-		double angularPower, linearPower;
+		double angular_power;
+		double linear_power;
 		
-		double negativeInertiaAccumulator = 0.0;
-		double negativeInertiaScalar;
+		double neg_inertia_acc = 0.0;
+		double neg_inertia_k;
 		
-		if(isHighGear) {
-			if(Math.abs(wheel) > 0.65) {
-				negativeInertiaScalar = 6.5;
-			} else {
-				negativeInertiaScalar = 4.5;
-			}
-			sensitivity = Constants.driveTurnSensitivityHigh;
-		} else {
-			if(wheel * negativeInertia > 0) {
-				negativeInertiaScalar = 2.5;
-			} else {
-				if(Math.abs(wheel) > 0.65) {
-					negativeInertiaScalar = 5.5;
-				} else {
-					negativeInertiaScalar = 3.0;
-				}
-			}
-			sensitivity = Constants.driveTurnSensitivityLow;
+		neg_inertia_k = 4.0;
+		sensitivity = 0.75;
+		
+		double neg_inertia_power = neg_inertia * neg_inertia_k;
+		neg_inertia_acc += neg_inertia_power;
+		
+		wheel += neg_inertia_acc;
+		if(neg_inertia_acc > 1) {
+			neg_inertia_acc -= 1;
 		}
-		
-		double negativeInertiaPower = negativeInertia * negativeInertiaScalar;
-		negativeInertiaAccumulator += negativeInertiaPower;
-		wheel = wheel + negativeInertiaAccumulator;
-		
-		if(negativeInertiaAccumulator > 1) {
-			negativeInertiaAccumulator -= 1;
-		} else if(negativeInertiaAccumulator < -1) {
-			negativeInertiaAccumulator += 1;
-		} else {
-			negativeInertiaAccumulator = 0;
+		else if(neg_inertia_acc < -1) {
+			neg_inertia_acc += 1;
 		}
+		else {
+			neg_inertia_acc = 0;
+		}
+		linear_power = throttle;
 		
-		linearPower = throttle;
-		
-		if(isQuickTurn) {
-			if(Math.abs(linearPower) > 0.2) {
+		if(quick_turn) {
+			if(Math.abs(linear_power) < 0.2) {
 				double alpha = 0.1;
-				double wheelLimit = Math.min(Math.max(wheel, -1.0), 1.0);
-				quickStopAccumulator = (1 - alpha) * quickStopAccumulator + alpha * wheelLimit * 5;
+				// Assumed that wheel limit is a reverse deadband 
+				double wheel_limit = Math.min(Math.max(wheel, -1.0), 1.0);
+				quick_stop_acc = (1 - alpha) * quick_stop_acc + alpha * wheel_limit * 5;
 			}
-			overPower = 1.0;
+			over_power = 1.0;
 			sensitivity = 1.0;
-			angularPower = wheel;
-			
-		} else {
-			overPower = 0.0;
-			angularPower = Math.abs(throttle) * wheel * sensitivity - quickStopAccumulator;
-			if (quickStopAccumulator > 1) {
-				quickStopAccumulator -= 1;
-			} else if (quickStopAccumulator < -1) {
-				quickStopAccumulator += 1;
-			} else {
-				quickStopAccumulator = 0.0;
+			angular_power = wheel;
+		}
+		else {
+			over_power = 0.0;
+			angular_power = Math.abs(throttle) * wheel * sensitivity - quick_stop_acc;
+			if(quick_stop_acc > 1) {
+				quick_stop_acc -= 1;
+			}
+			else if(quick_stop_acc < -1) {
+				quick_stop_acc += 1;
+			}
+			else {
+				quick_stop_acc = 0;
 			}
 		}
+		right_PWM = left_PWM = linear_power;
+		left_PWM += angular_power;
+		right_PWM -= angular_power;
 		
-		rightSpeed = leftSpeed = linearPower;
-		leftSpeed += angularPower;
-		rightSpeed -= angularPower;
-		
-		if (leftSpeed > 1.0) {
-			rightSpeed -= overPower * (leftSpeed - 1.0);
-			leftSpeed = 1.0;
-		} else if (rightSpeed > 1.0) {
-			leftSpeed -= overPower * (rightSpeed - 1.0);
-			rightSpeed = 1.0;
-		} else if (leftSpeed < -1.0) {
-			rightSpeed += overPower * (-1.0 - leftSpeed);
-			leftSpeed = -1.0;
-		} else if (rightSpeed < -1.0) {
-			leftSpeed += overPower * (-1.0 - rightSpeed);
-			rightSpeed = -1.0;
+		if(left_PWM > 1.0) {
+			right_PWM -= over_power * (left_PWM - 1.0);
+			left_PWM = 1.0;
+		} else if (right_PWM > 1.0) {
+			left_PWM -= over_power * (right_PWM - 1.0);
+			right_PWM = 1.0; 
+		} else if(left_PWM < -1.0) {
+			right_PWM += over_power * (-1.0 - left_PWM);
+			left_PWM = -1.0;
+		} else if(right_PWM < -1.0) {
+			left_PWM += over_power * (-1.0 - right_PWM);
+			right_PWM = -1.0;
 		}
-		HAL.drivetrain.tank(leftSpeed, rightSpeed);
+		HAL.drivetrain.tank(-right_PWM, -left_PWM);
 	}
 	
 	public double handleDeadband(double val, double deadband) {

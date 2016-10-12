@@ -6,9 +6,11 @@ import org.usfirst.frc.team8.subsystems.Grabber;
 import org.usfirst.frc.team8.subsystems.Intake;
 import org.usfirst.frc.team8.subsystems.Shooter;
 
+import edu.wpi.first.wpilibj.ADXRS450_Gyro;
 import edu.wpi.first.wpilibj.CANTalon;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.VictorSP;
 import edu.wpi.first.wpilibj.networktables.NetworkTable;
 
@@ -24,10 +26,14 @@ public class HAL {
 	public static VictorSP leftIntake = new VictorSP(0);
 	public static VictorSP rightIntake = new VictorSP(1);
 	
-	public static DoubleSolenoid grabberSolenoid = new DoubleSolenoid(4, 3);
+	public static DoubleSolenoid grabberSolenoid = new DoubleSolenoid(3, 4);
 	public static DoubleSolenoid driveShifter = new DoubleSolenoid(0, 7);
-	public static DoubleSolenoid shooterLoad = new DoubleSolenoid(2, 5);
-	public static DoubleSolenoid shooterLock = new DoubleSolenoid(1, 6);
+	public static DoubleSolenoid shooterLoad = new DoubleSolenoid(5, 2);
+	public static DoubleSolenoid shooterLock = new DoubleSolenoid(6, 1);
+	
+	public static Encoder driveEncoderA = new Encoder(2, 0);
+	public static Encoder driveEncoderB = new Encoder(3, 1);
+	public static ADXRS450_Gyro spartanBoard = new ADXRS450_Gyro();
 	
 	public static final Drivetrain drivetrain = new Drivetrain();
 	public static final Breacher breacher = new Breacher();
