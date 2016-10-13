@@ -12,4 +12,7 @@ public class Constants {
 	public static double shooterPositionD = 0.001;
 	public static double shooterReverseLimit = -1.0;
 	public static double shooterForwardLimit = 1.0;
+	
+	public static double pixelsPerDistance = 42.394;
+	public static double acceptablePixelError = 5.0;
 }

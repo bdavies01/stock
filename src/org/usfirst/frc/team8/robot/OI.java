@@ -3,6 +3,7 @@ package org.usfirst.frc.team8.robot;
 import java.util.function.DoubleSupplier;
 import java.util.function.DoubleUnaryOperator;
 
+import org.usfirst.frc.team8.commands.AutoAlignment;
 import org.usfirst.frc.team8.commands.SetState;
 import org.usfirst.frc.team8.commands.ShiftTo;
 import org.usfirst.frc.team8.commands.ShooterExtend;
@@ -62,6 +63,7 @@ public class OI {
 	public static Button shiftUp = new JoystickButton(driveStick, 4);
 	public static Button shiftDown = new JoystickButton(driveStick, 6);
 	public static Button toggleAutoShift = new JoystickButton(driveStick, 7);
+	public static Button commandCancelButton = new JoystickButton(driveStick, 1);
 	public static DoubleSupplier driveStickValue = () -> deadband.applyAsDouble(driveStick.getY());
 	
 	public static Joystick turnStick = new Joystick(1);
@@ -95,6 +97,9 @@ public class OI {
 		xboxY.whenPressed(new ShooterUnlock());
 		
 		xboxLB.whileHeld(new SetState<Grabber.State>(grabber, Grabber.State.RAISED, Grabber.State.LOWERED));
+		
+		autoAlignment.whenPressed(new AutoAlignment());
+		commandCancelButton.cancelWhenPressed(new AutoAlignment());
 	}
 	
 }

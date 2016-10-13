@@ -42,6 +42,7 @@ public class HAL {
 	public static final Shooter shooter = new Shooter();
 	
 	public static final DriverStation ds = DriverStation.getInstance();
-	public static final NetworkTable table = NetworkTable.getTable("RobotTable");
+	public static final NetworkTable robotTable = NetworkTable.getTable("RobotTable");
+	public static final NetworkTable visionTable = NetworkTable.getTable("visiondata");
 	
 }

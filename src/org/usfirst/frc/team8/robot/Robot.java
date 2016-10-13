@@ -69,7 +69,7 @@ public class Robot extends IterativeRobot {
     @Override
     public void autonomousInit() {
         autonomousCommand = null;
-        String autoPath = HAL.table.getString("autopath", "20pt");
+        String autoPath = HAL.robotTable.getString("autopath", "20pt");
         switch(autoPath) {
         case "20pt":
         	//submit 20 pt
