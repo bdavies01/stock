@@ -3,17 +3,19 @@ package org.usfirst.frc.team8.commands;
 import edu.wpi.first.wpilibj.command.Command;
 import static org.usfirst.frc.team8.robot.HAL.drivetrain;
 
-import org.usfirst.frc.team8.lib.SynchronousPID;
-
 /**
 *@author bertd
 */
 public class DriveDifferential extends Command {
 	
-	private SynchronousPID pid;
-	public DriveDifferential() {
+	private double time;
+	private double differential;
+	private double driveSpeed;
+	public DriveDifferential(double time, double driveSpeed, double differential) {
 		super("Drive Differential");
-		pid = new SynchronousPID();
+		this.time = time;
+		this.differential = differential;
+		this.driveSpeed = driveSpeed;
 		requires(drivetrain);
 	}
 
@@ -23,11 +25,12 @@ public class DriveDifferential extends Command {
 
 	@Override
 	protected void execute() {
+		drivetrain.arcade(driveSpeed, differential);
 	}
 
 	@Override
 	protected boolean isFinished() {
-		return false;
+		return time > this.timeSinceInitialized(); 
 		
 	}
 

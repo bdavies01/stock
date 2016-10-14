@@ -31,8 +31,8 @@ public class HAL {
 	public static DoubleSolenoid shooterLoad = new DoubleSolenoid(5, 2);
 	public static DoubleSolenoid shooterLock = new DoubleSolenoid(6, 1);
 	
-	public static Encoder driveEncoderA = new Encoder(2, 0);
-	public static Encoder driveEncoderB = new Encoder(3, 1);
+	public static Encoder leftDriveEncoder = new Encoder(2, 3);
+	public static Encoder rightDriveEncoder = new Encoder(0, 1);
 	public static ADXRS450_Gyro spartanBoard = new ADXRS450_Gyro();
 	
 	public static final Drivetrain drivetrain = new Drivetrain();

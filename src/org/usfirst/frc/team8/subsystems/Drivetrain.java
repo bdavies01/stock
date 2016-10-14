@@ -35,10 +35,10 @@ public class Drivetrain extends Subsystem implements PIDSource {
 		leftBack.changeControlMode(TalonControlMode.Follower);
 		leftBack.set(leftFront.getDeviceID());
 		
-		driveEncoderA.setDistancePerPulse(-0.184);
-		driveEncoderB.setDistancePerPulse(0.184);
-		driveEncoderA.reset();
-		driveEncoderB.reset();
+		leftDriveEncoder.setDistancePerPulse(-0.184);
+		rightDriveEncoder.setDistancePerPulse(0.184);
+		leftDriveEncoder.reset();
+		rightDriveEncoder.reset();
 		
 		spartanBoard.calibrate();;
 		

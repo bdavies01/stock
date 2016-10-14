@@ -2,8 +2,8 @@ package org.usfirst.frc.team8.commands;
 
 import edu.wpi.first.wpilibj.command.Command;
 import static org.usfirst.frc.team8.robot.HAL.drivetrain;
-import static org.usfirst.frc.team8.robot.HAL.driveEncoderA;
-import static org.usfirst.frc.team8.robot.HAL.driveEncoderB;
+import static org.usfirst.frc.team8.robot.HAL.leftDriveEncoder;
+import static org.usfirst.frc.team8.robot.HAL.rightDriveEncoder;
 import static org.usfirst.frc.team8.robot.HAL.visionTable;
 
 import org.usfirst.frc.team8.lib.SynchronousPID;
@@ -11,8 +11,8 @@ import org.usfirst.frc.team8.robot.Constants;
 import org.usfirst.frc.team8.robot.OI;
 
 /**
-*@author bertd
-*/
+ * @author bertd
+ */
 public class AutoAlignment extends Command {
 	private double speedLimit;
 	private double xDisplacement;
@@ -21,41 +21,44 @@ public class AutoAlignment extends Command {
 	private boolean turningAngle;
 	private boolean done;
 	private SynchronousPID pid;
-	
+
 	public AutoAlignment() {
+		super("Auto Alignment");
 		requires(drivetrain);
 		this.speedLimit = 0.5;
 		pid = new SynchronousPID();
 	}
-	
+
 	public AutoAlignment(double speedLimit) {
 		requires(drivetrain);
 		this.speedLimit = speedLimit;
 		pid = new SynchronousPID();
 	}
-	
+
 	@Override
 	protected void initialize() {
 		turningAngle = true;
 		done = false;
 		xDisplacement = visionTable.getNumber("xdisplacement", 100000);
 		error = Double.MAX_VALUE;
-		driveEncoderA.reset();
-		driveEncoderB.reset();
-		pid.setPID(0.045, 0, 0);
+		leftDriveEncoder.reset();
+		rightDriveEncoder.reset();
+		pid.setPID(0.1, 0, 0);
 		pid.setOutputRange(-speedLimit, speedLimit);
 		counter = 0;
 	}
 
 	@Override
 	protected void execute() {
-		if(turningAngle) {
-			double encoderDisplacement = Constants.pixelsPerDistance * (driveEncoderA.getDistance() - driveEncoderB.getDistance()) / 2;
+		if (turningAngle) {
+			double encoderDisplacement = Constants.pixelsPerDistance
+					* (leftDriveEncoder.getDistance() - rightDriveEncoder.getDistance()) / 2;
 			error = xDisplacement - encoderDisplacement;
 			pid.setSetpoint(0.0);
 			double speed = pid.calculate(error);
-			drivetrain.tank(speed, speed);
-			if(Math.abs(pid.getError()) < Constants.acceptablePixelError) {
+			System.out.println(speed);
+			drivetrain.tank(-speed, speed);
+			if (Math.abs(pid.getError()) < Constants.acceptablePixelError) {
 				turningAngle = false;
 			} else {
 				done = false;
@@ -63,8 +66,8 @@ public class AutoAlignment extends Command {
 		} else {
 			counter++;
 		}
-		
-		if(!checkDisplacement() && !turningAngle && counter >= 60) {
+
+		if (!checkDisplacement() && !turningAngle && counter >= 60) {
 			xDisplacement = visionTable.getNumber("xdisplacement", this.xDisplacement);
 			turningAngle = true;
 			counter = 0;
@@ -76,16 +79,16 @@ public class AutoAlignment extends Command {
 
 	@Override
 	protected boolean isFinished() {
-		if(OI.commandCancelButton.get()) {
+		if (OI.commandCancelButton.get()) {
 			return true;
 		} else {
-			if(done) {
+			if (done) {
 				return true;
 			} else {
 				return false;
 			}
 		}
-		
+
 	}
 
 	@Override
@@ -97,10 +100,10 @@ public class AutoAlignment extends Command {
 	protected void interrupted() {
 		drivetrain.tank(0, 0);
 	}
-	
+
 	/**
 	 * Checks to see if the xdisplacement is in an acceptable range. Returns
-	 * true if acceptable, and false if not. 
+	 * true if acceptable, and false if not.
 	 */
 	public boolean checkDisplacement() {
 		double tempDisplacement = visionTable.getNumber("xdisplacement", this.xDisplacement);

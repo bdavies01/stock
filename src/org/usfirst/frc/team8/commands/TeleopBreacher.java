@@ -12,11 +12,10 @@ import edu.wpi.first.wpilibj.command.Command;;
 */
 public class TeleopBreacher extends Command {
 	private final DoubleSupplier breacherAxis;
-	private double sensitivity;
+	private double bert;
 	public TeleopBreacher(DoubleSupplier breacherAxis) {
 		requires(breacher);
 		this.breacherAxis = breacherAxis;
-		this.sensitivity = 0.75;
 	}
 
 	@Override
@@ -25,7 +24,9 @@ public class TeleopBreacher extends Command {
 
 	@Override
 	protected void execute() {
-		breacherArm.set(breacherAxis.getAsDouble() * sensitivity);
+		bert = breacherAxis.getAsDouble() * 0.28;
+		//breacherArm.set(((22.2/5) * Math.pow(bert, 5)) - (11.1 * Math.pow(bert, 4)) + ((22.2/3) * Math.pow(bert, 3)));
+		breacherArm.set(Math.sin(Math.sin(Math.sin(bert))));
 	}
 
 	@Override
