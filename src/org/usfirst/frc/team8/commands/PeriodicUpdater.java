@@ -41,6 +41,12 @@ public class PeriodicUpdater extends Command {
 		robotTable.putNumber("match-time", ds.getMatchTime());
 		robotTable.putBoolean("brownout-status", ds.isBrownedOut());
 		robotTable.putNumber("battery", ds.getBatteryVoltage());
+		
+		robotTable.putString("pvaluehandshake", Double.toString(robotTable.getNumber("pvalue", -1)));
+		robotTable.putString("ivaluehandshake", Double.toString(robotTable.getNumber("ivalue", -1)));
+		robotTable.putString("dvaluehandshake", Double.toString(robotTable.getNumber("dvalue", -1)));
+		robotTable.putString("autopathhandshake", robotTable.getString("autopath", "None"));
+		
 		if (ds.isAutonomous()) {
 			robotTable.putString("game-period", "Autonomous");
 		} else if (ds.isDisabled()) {

@@ -45,6 +45,7 @@ public class AutoAlignment extends Command {
 		rightDriveEncoder.reset();
 		pid.setPID(0.1, 0, 0);
 		pid.setOutputRange(-speedLimit, speedLimit);
+		pid.setSetpoint(0.0);
 		counter = 0;
 	}
 
@@ -54,7 +55,6 @@ public class AutoAlignment extends Command {
 			double encoderDisplacement = Constants.pixelsPerDistance
 					* (leftDriveEncoder.getDistance() - rightDriveEncoder.getDistance()) / 2;
 			error = xDisplacement - encoderDisplacement;
-			pid.setSetpoint(0.0);
 			double speed = pid.calculate(error);
 			System.out.println(speed);
 			drivetrain.tank(-speed, speed);

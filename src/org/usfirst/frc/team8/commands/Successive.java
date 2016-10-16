@@ -8,7 +8,7 @@ import static org.usfirst.frc.team8.robot.HAL.visionTable;
 *@author bertd
 */
 public class Successive extends Command {
-	private AutoAlignment align = new AutoAlignment();
+	private SingleAlign align;
 	private double breaktime = 0;
 	private boolean done = false;
 	
@@ -18,16 +18,17 @@ public class Successive extends Command {
 	
 	@Override
 	protected void initialize() {
+		align = new SingleAlign();
 		align.start();
 	}
 
 	@Override
 	protected void execute() {
 		if(!align.isRunning()) {
-			if(visionTable.getNumber("xdisplacement", 100000) > 5 && this.timeSinceInitialized() - breaktime > 60) {
-				align = new AutoAlignment();
+			if(visionTable.getNumber("xdisplacement", 100000) > 5 && this.timeSinceInitialized() - breaktime > 1.5) {
+				align = new SingleAlign();
 				align.start();
-			} else if(visionTable.getNumber("xdisplacement", 100000) < 5 && this.timeSinceInitialized() - breaktime > 60) {
+			} else if(visionTable.getNumber("xdisplacement", 100000) < 5 && this.timeSinceInitialized() - breaktime > 1.5) {
 				done = true;
 			}
 		} else {

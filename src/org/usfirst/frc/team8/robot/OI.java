@@ -3,13 +3,13 @@ package org.usfirst.frc.team8.robot;
 import java.util.function.DoubleSupplier;
 import java.util.function.DoubleUnaryOperator;
 
-import org.usfirst.frc.team8.commands.AutoAlignment;
 import org.usfirst.frc.team8.commands.SetState;
 import org.usfirst.frc.team8.commands.ShiftTo;
 import org.usfirst.frc.team8.commands.ShooterExtend;
 import org.usfirst.frc.team8.commands.ShooterLock;
 import org.usfirst.frc.team8.commands.ShooterRetract;
 import org.usfirst.frc.team8.commands.ShooterUnlock;
+import org.usfirst.frc.team8.commands.SuccessiveAutoAlignment;
 import org.usfirst.frc.team8.lib.ExpelButton;
 import org.usfirst.frc.team8.lib.IntakeButton;
 import org.usfirst.frc.team8.subsystems.Drivetrain.Gear;
@@ -98,8 +98,7 @@ public class OI {
 		
 		xboxLB.whileHeld(new SetState<Grabber.State>(grabber, Grabber.State.RAISED, Grabber.State.LOWERED));
 		
-		autoAlignment.whenPressed(new AutoAlignment());
-		commandCancelButton.cancelWhenPressed(new AutoAlignment());
+		autoAlignment.whenPressed(new SuccessiveAutoAlignment(0.33));
 	}
 	
 }
