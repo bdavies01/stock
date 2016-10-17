@@ -9,6 +9,11 @@ import org.usfirst.frc.team8.subsystems.Drivetrain.Gear;
 
 import edu.wpi.first.wpilibj.command.Command;
 
+/**
+ * 
+ * @author bertd
+ *
+ */
 public class TeleopDrive extends Command {
 
 	private final CheezyDriveHelper cdh;

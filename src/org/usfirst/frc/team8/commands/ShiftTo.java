@@ -5,6 +5,11 @@ import org.usfirst.frc.team8.subsystems.Drivetrain.Gear;
 
 import edu.wpi.first.wpilibj.command.Command;
 
+/**
+ * 
+ * @author bertd
+ *
+ */
 public class ShiftTo extends Command {
 	private final Gear gear;
 	public ShiftTo(Gear gear) {

@@ -4,8 +4,14 @@ import edu.wpi.first.wpilibj.command.Command;
 import static org.usfirst.frc.team8.robot.HAL.robotTable;
 import static org.usfirst.frc.team8.robot.HAL.ds;
 
+/**
+ * 
+ * @author bertd
+ *
+ */
 public class PeriodicUpdater extends Command {
 	private boolean checkingAlliance;
+	
 	@Override
 	protected void initialize() {
 		checkingAlliance = true;

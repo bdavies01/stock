@@ -26,7 +26,7 @@ public class Drive extends Command {
 	 * @param maxDistance	max encoder distance
 	 * @param maxOutput	max motor output
 	 */
-	public Drive(boolean forward, int maxTime, double maxDistance,
+	public Drive(boolean forward, double maxTime, double maxDistance,
 			double maxOutput) {
 		requires(drivetrain);
 		this.maxTime = maxTime;
@@ -48,7 +48,7 @@ public class Drive extends Command {
 	 * Same as first constructor but defaults the maxDistance
 	 * to Double.MAX_VALUE.
 	 */
-	public Drive(boolean forward, int maxTime, double maxOutput) {
+	public Drive(boolean forward, double maxTime, double maxOutput) {
 		this(forward, maxTime, Double.MAX_VALUE, maxOutput);
 	}
 	
@@ -94,9 +94,9 @@ public class Drive extends Command {
 		}
 		
 		if(forward) {
-			drivetrain.tank(maxOutput, -maxOutput);
+			drivetrain.tank(maxOutput, maxOutput);
 		} else {
-			drivetrain.tank(-maxOutput, maxOutput);
+			drivetrain.tank(-maxOutput, -maxOutput);
 		}
 		
 	}

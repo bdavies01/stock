@@ -6,6 +6,7 @@ import static org.usfirst.frc.team8.robot.HAL.leftDriveEncoder;
 import static org.usfirst.frc.team8.robot.HAL.rightDriveEncoder;
 import static org.usfirst.frc.team8.robot.HAL.visionTable;
 
+import org.usfirst.frc.team8.robot.Constants;
 import org.usfirst.frc.team8.robot.OI;
 
 /**
@@ -62,11 +63,11 @@ public class SuccessiveAutoAlignment extends Command {
 			previousError = error;
 
 			double leftSpeed = Math.min(
-					Math.max(0.045 * error + 0.0 * derivative, -speedLimit), speedLimit);
+					Math.max(Constants.autoAlignmentP * error + Constants.autoAlignmentD * derivative, -speedLimit), speedLimit);
 			double rightSpeed = Math.min(
-					Math.max(0.045 * error + 0.0 * derivative, -speedLimit), speedLimit);
+					Math.max(Constants.autoAlignmentP * error + Constants.autoAlignmentD * derivative, -speedLimit), speedLimit);
 
-			drivetrain.tank(leftSpeed, rightSpeed);
+			drivetrain.tank(-leftSpeed, rightSpeed);
 
 			if (Math.abs(error) > 5) {
 				done = false;

@@ -4,6 +4,11 @@ import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.buttons.Trigger;
 import edu.wpi.first.wpilibj.command.Command;
 
+/**
+ * 
+ * @author bertd
+ *
+ */
 public class IntakeButton extends Trigger {
 	private GenericHID stick;
 

@@ -92,9 +92,9 @@ public class DriveDifferential extends Command {
 		}
 		
 		if(forward) {
-			drivetrain.tank(maxOutput + leftOffset / 2, -(maxOutput - leftOffset / 2));
+			drivetrain.tank(maxOutput + leftOffset / 2, (maxOutput - leftOffset / 2));
 		} else {
-			drivetrain.tank(-maxOutput - leftOffset / 2, -(-maxOutput + leftOffset / 2));
+			drivetrain.tank(-maxOutput - leftOffset / 2, (-maxOutput + leftOffset / 2));
 		}
 	}
 

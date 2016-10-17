@@ -40,7 +40,7 @@ public class Drivetrain extends Subsystem implements PIDSource {
 		leftDriveEncoder.reset();
 		rightDriveEncoder.reset();
 		
-		spartanBoard.calibrate();;
+		spartanBoard.calibrate();
 		
 		rightFront.setFeedbackDevice(FeedbackDevice.CtreMagEncoder_Relative);
 		rightFront.reverseSensor(true);

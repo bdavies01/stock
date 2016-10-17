@@ -1,7 +1,7 @@
 package org.usfirst.frc.team8.lib;
 import edu.wpi.first.wpilibj.util.BoundaryException;
 /**
-*@author bertd
+*@author FRC Team 254
 */
 /**
  * Class implements a PID Control Loop.

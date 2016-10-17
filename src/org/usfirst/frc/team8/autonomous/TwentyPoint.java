@@ -15,6 +15,11 @@ import org.usfirst.frc.team8.subsystems.Intake;
 
 import edu.wpi.first.wpilibj.command.CommandGroup;
 
+/**
+ * 
+ * @author bertd
+ *
+ */
 public class TwentyPoint extends CommandGroup {
 	
 	public TwentyPoint() {

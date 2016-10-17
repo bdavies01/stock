@@ -3,6 +3,11 @@ package org.usfirst.frc.team8.commands;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Subsystem;
 
+/**
+ * 
+ * @author FRC Team 2383
+ *
+ */
 public class SetState<StateT extends Enum<StateT>> extends Command {
 
 	private final StatefulSubsystem<StateT> subsystem;

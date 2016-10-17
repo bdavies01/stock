@@ -1,5 +1,10 @@
 package org.usfirst.frc.team8.robot;
 
+/**
+ * 
+ * @author bertd
+ *
+ */
 public class Constants {
 	public static double driveWheelDiameter = 6.0;
 	public static double driveWheelCircumference = driveWheelDiameter * Math.PI;
@@ -13,6 +18,11 @@ public class Constants {
 	public static double shooterReverseLimit = -1.0;
 	public static double shooterForwardLimit = 1.0;
 	
+	public static double autoAlignmentP = 0.045;
+	public static double autoAlignmentD = 0.0;
+	
 	public static double pixelsPerDistance = 42.394;
 	public static double acceptablePixelError = 5.0;
+	
+	public static double drivetrainOrientation = 1.0;
 }

@@ -3,6 +3,8 @@ package org.usfirst.frc.team8.robot;
 import java.util.function.DoubleSupplier;
 import java.util.function.DoubleUnaryOperator;
 
+import org.usfirst.frc.team8.commands.ForwardDrive;
+import org.usfirst.frc.team8.commands.ReverseDrive;
 import org.usfirst.frc.team8.commands.SetState;
 import org.usfirst.frc.team8.commands.ShiftTo;
 import org.usfirst.frc.team8.commands.ShooterExtend;
@@ -25,6 +27,12 @@ import edu.wpi.first.wpilibj.buttons.JoystickButton;
 /**
  * This class is the glue that binds the controls on the physical operator
  * interface to the commands and command groups that allow control of the robot.
+ */
+
+/**
+ * 
+ * @author bertd
+ *
  */
 public class OI {
     //// CREATING BUTTONS
@@ -60,11 +68,13 @@ public class OI {
 	
 	public static Joystick driveStick = new Joystick(0);
 	public static Button autoAlignment = new JoystickButton(driveStick, 2);
+	public static Button forwardDrive = new JoystickButton(driveStick, 5);
+	public static Button reverseDrive = new JoystickButton(driveStick, 3);
 	public static Button shiftUp = new JoystickButton(driveStick, 4);
 	public static Button shiftDown = new JoystickButton(driveStick, 6);
 	public static Button toggleAutoShift = new JoystickButton(driveStick, 7);
 	public static Button commandCancelButton = new JoystickButton(driveStick, 1);
-	public static DoubleSupplier driveStickValue = () -> deadband.applyAsDouble(driveStick.getY());
+	public static DoubleSupplier driveStickValue = () -> deadband.applyAsDouble(Constants.drivetrainOrientation * driveStick.getY());
 	
 	public static Joystick turnStick = new Joystick(1);
 	public static Button quickTurn = new JoystickButton(turnStick, 1);
@@ -99,7 +109,8 @@ public class OI {
 		xboxLB.whileHeld(new SetState<Grabber.State>(grabber, Grabber.State.RAISED, Grabber.State.LOWERED));
 		
 		autoAlignment.whenPressed(new SuccessiveAutoAlignment(0.33));
+		forwardDrive.whenPressed(new ForwardDrive());
+		reverseDrive.whenPressed(new ReverseDrive());
 	}
 	
 }
-

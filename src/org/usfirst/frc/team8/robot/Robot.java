@@ -1,6 +1,9 @@
 
 package org.usfirst.frc.team8.robot;
 
+import org.usfirst.frc.team8.autonomous.Drive;
+import org.usfirst.frc.team8.autonomous.NullCommand;
+import org.usfirst.frc.team8.autonomous.TwentyPoint;
 import org.usfirst.frc.team8.commands.PeriodicUpdater;
 
 import edu.wpi.first.wpilibj.IterativeRobot;
@@ -14,6 +17,12 @@ import edu.wpi.first.wpilibj.livewindow.LiveWindow;
  * documentation. If you change the name of this class or the package after
  * creating this project, you must also update the manifest file in the resource
  * directory.
+ */
+
+/**
+ * 
+ * @author bertd
+ *
  */
 public class Robot extends IterativeRobot {
 	public static OI oi;
@@ -68,15 +77,18 @@ public class Robot extends IterativeRobot {
 	 */
     @Override
     public void autonomousInit() {
-        autonomousCommand = null;
-        String autoPath = HAL.robotTable.getString("autopath", "20pt");
+        String autoPath = HAL.robotTable.getString("autopath", "none");
         switch(autoPath) {
+        case "none":
+        	autonomousCommand = new NullCommand();
         case "20pt":
-        	//submit 20 pt
+        	autonomousCommand = new TwentyPoint();
         case "b/d": 
-        	//submit bd
+        	autonomousCommand = new Drive(true, 5, 100, 0.5);
         case "low bar":
         	//submit low bar
+        default:
+        	autonomousCommand = new NullCommand();
         }
     	
     	// schedule the autonomous command (example)

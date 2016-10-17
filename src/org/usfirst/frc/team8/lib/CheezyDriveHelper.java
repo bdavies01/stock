@@ -1,21 +1,18 @@
 package org.usfirst.frc.team8.lib;
 import org.usfirst.frc.team8.robot.HAL;
 
+/**
+ * 
+ * @author FRC Team 254
+ *
+ */
 public class CheezyDriveHelper {
 	private double old_wheel, quick_stop_acc;
-	private final double DEADBAND = 0.02;
 	
 	public void cheezyDrive(double throttle, double wheel, boolean isQuickTurn) {
 		boolean quick_turn = isQuickTurn;
 		
 		double wheel_non_linear;
-		
-		if(Math.abs(wheel) < DEADBAND) {
-			wheel = 0;
-		}
-		if(Math.abs(throttle) < DEADBAND) {
-			throttle = 0;
-		}
 		
 		double neg_inertia = wheel - old_wheel;
 		old_wheel = wheel;

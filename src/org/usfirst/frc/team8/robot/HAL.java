@@ -14,25 +14,30 @@ import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.VictorSP;
 import edu.wpi.first.wpilibj.networktables.NetworkTable;
 
+/**
+ * 
+ * @author bertd
+ *
+ */
 public class HAL {
-	public static CANTalon leftFront  = new CANTalon(1);
-	public static CANTalon leftBack = new CANTalon(3);
-	public static CANTalon rightFront = new CANTalon(2);
-	public static CANTalon rightBack = new CANTalon(4);
+	public static CANTalon leftFront  = new CANTalon(RobotMap.leftFrontMotor);
+	public static CANTalon leftBack = new CANTalon(RobotMap.leftBackMotor);
+	public static CANTalon rightFront = new CANTalon(RobotMap.rightFrontMotor);
+	public static CANTalon rightBack = new CANTalon(RobotMap.rightBackMotor);
 	
-	public static CANTalon shooterArm = new CANTalon(8);
-	public static CANTalon breacherArm = new CANTalon(5);
+	public static CANTalon shooterArm = new CANTalon(RobotMap.shooterArmMotor);
+	public static CANTalon breacherArm = new CANTalon(RobotMap.breacherArmMotor);
 	
-	public static VictorSP leftIntake = new VictorSP(0);
-	public static VictorSP rightIntake = new VictorSP(1);
+	public static VictorSP leftIntake = new VictorSP(RobotMap.leftIntakeMotor);
+	public static VictorSP rightIntake = new VictorSP(RobotMap.rightIntakeMotor);
 	
-	public static DoubleSolenoid grabberSolenoid = new DoubleSolenoid(3, 4);
-	public static DoubleSolenoid driveShifter = new DoubleSolenoid(0, 7);
-	public static DoubleSolenoid shooterLoad = new DoubleSolenoid(5, 2);
-	public static DoubleSolenoid shooterLock = new DoubleSolenoid(6, 1);
+	public static DoubleSolenoid grabberSolenoid = new DoubleSolenoid(RobotMap.grabberSolenoidA, RobotMap.grabberSolenoidB);
+	public static DoubleSolenoid driveShifter = new DoubleSolenoid(RobotMap.driveShifterA, RobotMap.driveShifterB);
+	public static DoubleSolenoid shooterLoad = new DoubleSolenoid(RobotMap.shooterLoadA, RobotMap.shooterLoadB);
+	public static DoubleSolenoid shooterLock = new DoubleSolenoid(RobotMap.shooterLockA, RobotMap.shooterLockB);
 	
-	public static Encoder leftDriveEncoder = new Encoder(2, 3);
-	public static Encoder rightDriveEncoder = new Encoder(0, 1);
+	public static Encoder leftDriveEncoder = new Encoder(RobotMap.leftEncoderA, RobotMap.leftEncoderB);
+	public static Encoder rightDriveEncoder = new Encoder(RobotMap.rightEncoderA, RobotMap.rightEncoderB);
 	public static ADXRS450_Gyro spartanBoard = new ADXRS450_Gyro();
 	
 	public static final Drivetrain drivetrain = new Drivetrain();
