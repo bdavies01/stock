@@ -4,6 +4,8 @@ import static org.usfirst.frc.team8.robot.HAL.drivetrain;
 import static org.usfirst.frc.team8.robot.HAL.leftDriveEncoder;
 import static org.usfirst.frc.team8.robot.HAL.rightDriveEncoder;
 
+import org.usfirst.frc.team8.robot.HAL;
+
 import edu.wpi.first.wpilibj.command.Command;
 
 /**
@@ -94,7 +96,11 @@ public class Drive extends Command {
 		}
 		
 		if(forward) {
-			drivetrain.tank(maxOutput, maxOutput);
+			//drivetrain.tank(maxOutput, maxOutput);
+			HAL.leftFront.set(maxOutput);
+			HAL.leftBack.set(maxOutput);
+			HAL.rightFront.set(maxOutput);
+			HAL.rightBack.set(maxOutput);
 		} else {
 			drivetrain.tank(-maxOutput, -maxOutput);
 		}

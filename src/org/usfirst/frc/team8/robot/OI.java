@@ -82,8 +82,8 @@ public class OI {
 	
 	public static Joystick operatorStick = new Joystick(4);
 	
-	public static DoubleSupplier shooterAxis = () -> deadband.applyAsDouble(-operatorStick.getRawAxis(1)); //xbox left y axis
-	public static DoubleSupplier breacherAxis = () -> deadband.applyAsDouble(operatorStick.getRawAxis(5));
+	public static DoubleSupplier shooterAxis = () -> -operatorStick.getRawAxis(1); //xbox left y axis
+	public static DoubleSupplier breacherAxis = () -> operatorStick.getRawAxis(5);
 	
 	public static Button xboxA = new JoystickButton(operatorStick, 1);
 	public static Button xboxB = new JoystickButton(operatorStick, 2);

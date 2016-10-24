@@ -3,8 +3,11 @@ package org.usfirst.frc.team8.robot;
 
 import org.usfirst.frc.team8.autonomous.Drive;
 import org.usfirst.frc.team8.autonomous.NullCommand;
-import org.usfirst.frc.team8.autonomous.TwentyPoint;
+import org.usfirst.frc.team8.autonomous.sequences.TwentyPoint;
 import org.usfirst.frc.team8.commands.PeriodicUpdater;
+import static org.usfirst.frc.team8.robot.HAL.drivetrain;
+import static org.usfirst.frc.team8.robot.HAL.shooter;
+import static org.usfirst.frc.team8.robot.HAL.breacher;
 
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.command.Command;
@@ -57,13 +60,13 @@ public class Robot extends IterativeRobot {
     @Override
 	public void disabledPeriodic() {
 		Scheduler.getInstance().run();
+		if (!periodicUpdater.isRunning()) {
+        	periodicUpdater.start();
+        }
 		
-		HAL.leftFront.enableBrakeMode(false);
-		HAL.leftBack.enableBrakeMode(false);
-		HAL.rightFront.enableBrakeMode(false);
-		HAL.rightBack.enableBrakeMode(false);
-		HAL.shooterArm.enableBrakeMode(true);
-		HAL.breacherArm.enableBrakeMode(true);
+		drivetrain.disableBrake();
+		shooter.enableBrake();
+		breacher.enableBrake();
 	}
 
 	/**
@@ -90,7 +93,7 @@ public class Robot extends IterativeRobot {
         default:
         	autonomousCommand = new NullCommand();
         }
-    	
+    	autonomousCommand = new TwentyPoint();
     	// schedule the autonomous command (example)
         if (autonomousCommand != null) {
         	autonomousCommand.start();
@@ -122,6 +125,9 @@ public class Robot extends IterativeRobot {
         if(!periodicUpdater.isRunning()) {
         	periodicUpdater.start();
         }
+        drivetrain.enableBrake();
+        shooter.disableBrake();
+        breacher.disableBrake();
     }
 
     /**

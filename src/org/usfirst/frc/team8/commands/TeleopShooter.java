@@ -21,7 +21,7 @@ public class TeleopShooter extends Command {
 
 	@Override
 	protected void execute() {
-		shooter.moveAtSpeed(yAxis.getAsDouble());
+		shooter.moveAtSpeed((((22.2/5) * Math.pow(yAxis.getAsDouble(), 5)) - (11.1 * Math.pow(yAxis.getAsDouble(), 4)) + ((22.2/3) * Math.pow(yAxis.getAsDouble(), 3))));
 	}
 
 	@Override

@@ -90,7 +90,11 @@ public class CheezyDriveHelper {
 			left_PWM += over_power * (-1.0 - right_PWM);
 			right_PWM = -1.0;
 		}
-		HAL.drivetrain.tank(-right_PWM, -left_PWM);
+	//	HAL.drivetrain.tank(-right_PWM, -left_PWM);
+		HAL.leftFront.set(-right_PWM);
+		HAL.leftBack.set(-right_PWM);
+		HAL.rightFront.set(left_PWM);
+		HAL.rightBack.set(left_PWM);
 	}
 	
 	public double handleDeadband(double val, double deadband) {

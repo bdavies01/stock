@@ -32,8 +32,6 @@ public class Drivetrain extends Subsystem implements PIDSource {
 		super("Drivetrain");
 		leftFront.setFeedbackDevice(FeedbackDevice.CtreMagEncoder_Relative);
 		leftFront.reverseSensor(false);
-		leftBack.changeControlMode(TalonControlMode.Follower);
-		leftBack.set(leftFront.getDeviceID());
 		
 		leftDriveEncoder.setDistancePerPulse(-0.184);
 		rightDriveEncoder.setDistancePerPulse(0.184);
@@ -44,16 +42,15 @@ public class Drivetrain extends Subsystem implements PIDSource {
 		
 		rightFront.setFeedbackDevice(FeedbackDevice.CtreMagEncoder_Relative);
 		rightFront.reverseSensor(true);
-		rightBack.changeControlMode(TalonControlMode.Follower);
-		rightBack.set(rightFront.getDeviceID());
-		
-		robotDrive = new RobotDrive(leftFront, rightFront);
+		robotDrive = new RobotDrive(leftFront, leftBack, rightFront, rightBack);
 		robotDrive.setSafetyEnabled(false);
 	}
 	
 	public void arcade(double driveSpeed, double turnSpeed) {
 		leftFront.changeControlMode(TalonControlMode.PercentVbus);
 		rightFront.changeControlMode(TalonControlMode.PercentVbus);
+		leftBack.changeControlMode(TalonControlMode.PercentVbus);
+		rightBack.changeControlMode(TalonControlMode.PercentVbus);
 		robotDrive.arcadeDrive(driveSpeed, turnSpeed);
 	}
 	
@@ -163,10 +160,16 @@ public class Drivetrain extends Subsystem implements PIDSource {
 		return getInches();
 	}
 	
+	/**
+	 * Enable drivetrain brake mode
+	 */
 	public void enableBrake() {
 		setBrake(true);
 	}
 	
+	/**
+	 * Disable drivetrain brake mode
+	 */
 	public void disableBrake() {
 		setBrake(false);
 	}
@@ -177,15 +180,4 @@ public class Drivetrain extends Subsystem implements PIDSource {
 		rightFront.enableBrakeMode(brake);
 		rightBack.enableBrakeMode(brake);
 	}
-	
-	public void holdPosition() {
-		leftFront.setProfile(1);
-		leftFront.changeControlMode(TalonControlMode.Position);
-		leftFront.setSetpoint(leftFront.getPosition());
-		
-		rightFront.setProfile(1);
-		rightFront.changeControlMode(TalonControlMode.Position);
-		rightFront.setSetpoint(rightFront.getPosition());
-	}
-
 }

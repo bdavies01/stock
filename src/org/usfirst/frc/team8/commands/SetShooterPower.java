@@ -2,7 +2,6 @@ package org.usfirst.frc.team8.commands;
 
 import edu.wpi.first.wpilibj.command.Command;
 import static org.usfirst.frc.team8.robot.HAL.shooter;
-import static org.usfirst.frc.team8.robot.HAL.shooterArm;
 
 /**
 *@author bertd
@@ -17,7 +16,11 @@ public class SetShooterPower extends Command {
 	
 	public SetShooterPower(boolean up) {
 		requires(shooter);
-		this.power = up ? 0.971 * 254 / 330 : -0.971 * 254 / 330;
+		if(up) {
+			this.power = 0.971 * 254 / 330;
+		} else {
+			this.power = -0.971 * 254 / 330;
+		}
 	}
 	
 	@Override
@@ -26,7 +29,7 @@ public class SetShooterPower extends Command {
 
 	@Override
 	protected void execute() {
-		shooterArm.set(power);
+		shooter.moveAtSpeed(power);
 	}
 
 	@Override

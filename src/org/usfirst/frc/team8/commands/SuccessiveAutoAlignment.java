@@ -7,6 +7,7 @@ import static org.usfirst.frc.team8.robot.HAL.rightDriveEncoder;
 import static org.usfirst.frc.team8.robot.HAL.visionTable;
 
 import org.usfirst.frc.team8.robot.Constants;
+import org.usfirst.frc.team8.robot.HAL;
 import org.usfirst.frc.team8.robot.OI;
 
 /**
@@ -41,6 +42,7 @@ public class SuccessiveAutoAlignment extends Command {
 
 	@Override
 	public void initialize() {
+		System.out.println("initialized");
 		this.xdisplacement = visionTable.getNumber("xdisplacement", this.xdisplacement);
 		this.previousError = 0.0;
 		this.turningAngle = true;
@@ -53,12 +55,15 @@ public class SuccessiveAutoAlignment extends Command {
 
 	@Override
 	public void execute() {
+		System.out.println("left: " + HAL.leftDriveEncoder.getDistance());
+		System.out.println("right: " + HAL.rightDriveEncoder.getDistance());
+		System.out.println("xdisplacement: " + xdisplacement);
 		keepGoing = true;
 		if (turningAngle) {
 			double encoderDisplacement = 42.394 * (leftDriveEncoder.getDistance()
 					- rightDriveEncoder.getDistance()) / 2;
-			
-			double error = xdisplacement - encoderDisplacement;
+			System.out.println("enc disp: " + encoderDisplacement);
+			double error = xdisplacement + encoderDisplacement;
 			double derivative = (error - previousError) * 50;
 			previousError = error;
 
@@ -66,14 +71,23 @@ public class SuccessiveAutoAlignment extends Command {
 					Math.max(Constants.autoAlignmentP * error + Constants.autoAlignmentD * derivative, -speedLimit), speedLimit);
 			double rightSpeed = Math.min(
 					Math.max(Constants.autoAlignmentP * error + Constants.autoAlignmentD * derivative, -speedLimit), speedLimit);
-
-			drivetrain.tank(-leftSpeed, rightSpeed);
+			System.out.println("left speed: " + leftSpeed);
+			System.out.println("right speed: " + rightSpeed);
+			System.out.println("error: " + error);
+			HAL.leftFront.set(leftSpeed);
+			HAL.leftBack.set(leftSpeed);
+			HAL.rightFront.set(rightSpeed);
+			HAL.rightBack.set(rightSpeed);
 
 			if (Math.abs(error) > 5) {
 				done = false;
 				keepGoing = false;
+				turningAngle = true;
 			} else {
-				drivetrain.tank(0, 0);
+				HAL.leftFront.set(0);
+				HAL.leftBack.set(0);
+				HAL.rightFront.set(0);
+				HAL.rightBack.set(0);
 				turningAngle = false;
 			}
 		} else if (!turningAngle && keepGoing){
@@ -92,6 +106,7 @@ public class SuccessiveAutoAlignment extends Command {
 			
 		} else if (checkDisplacement() && !turningAngle && counter >= 60 && keepGoing) {
 			done = true;
+			turningAngle = false;
 			keepGoing = false;
 		}
 	}
@@ -119,7 +134,10 @@ public class SuccessiveAutoAlignment extends Command {
 	
 	@Override
 	protected void interrupted() {
-		
+		HAL.leftFront.set(0);
+		HAL.leftBack.set(0);
+		HAL.rightFront.set(0);
+		HAL.rightBack.set(0);
 	}
 
 	/**
@@ -128,6 +146,10 @@ public class SuccessiveAutoAlignment extends Command {
 	 */
 	@Override
 	public void end() {
-		drivetrain.tank(0, 0);
+		System.out.println("ended");
+		HAL.leftFront.set(0);
+		HAL.leftBack.set(0);
+		HAL.rightFront.set(0);
+		HAL.rightBack.set(0);
 	}
 }
